@@ -6,12 +6,18 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 // For financial/audit data → always RESTRICT
 // For truly dependent data (e.g. cart items when cart is deleted) → CASCADE is fine
 
-export class CreateInitialSchema implements MigrationInterface {
-    name = 'CreateInitialSchema';
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        // 1. Create tenants table
-        await queryRunner.query(`
+// Simple rule:
+
+// Delete parent (tenant) while children exist → ❌ blocked
+// Delete children (notifications, credentials) anytime → ✅ allowed
+
+export class CreateInitialSchema1700000000000 implements MigrationInterface {
+  name = 'CreateInitialSchema1700000000000';
+
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    // 1. Create tenants table
+    await queryRunner.query(`
       CREATE TABLE "tenants" (
         "id"         UUID NOT NULL DEFAULT gen_random_uuid(),
         "name"       VARCHAR(255) NOT NULL,
@@ -20,16 +26,16 @@ export class CreateInitialSchema implements MigrationInterface {
       )
     `);
 
-        // 2. Create notifications table
-        await queryRunner.query(`
+    // 2. Create notifications table
+    await queryRunner.query(`
       CREATE TYPE "notification_channel_enum" AS ENUM ('email', 'sms', 'push')
     `);
 
-        await queryRunner.query(`
+    await queryRunner.query(`
       CREATE TYPE "notification_status_enum" AS ENUM ('pending', 'sent', 'failed', 'scheduled')
     `);
 
-        await queryRunner.query(`
+    await queryRunner.query(`
       CREATE TABLE "notifications" (
         "id"               UUID NOT NULL DEFAULT gen_random_uuid(),
         "tenant_id"        UUID NOT NULL,
@@ -50,8 +56,8 @@ export class CreateInitialSchema implements MigrationInterface {
       )
     `);
 
-        // 3. Create tenant_notification_credentials table
-        await queryRunner.query(`
+    // 3. Create tenant_notification_credentials table
+    await queryRunner.query(`
       CREATE TABLE "tenant_notification_credentials" (
         "tenant_id"  UUID NOT NULL,
         "channel"    VARCHAR(50) NOT NULL,
@@ -66,13 +72,13 @@ export class CreateInitialSchema implements MigrationInterface {
           ON DELETE RESTRICT
       )
     `);
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DROP TABLE "tenant_notification_credentials"`);
-        await queryRunner.query(`DROP TABLE "notifications"`);
-        await queryRunner.query(`DROP TYPE "notification_status_enum"`);
-        await queryRunner.query(`DROP TYPE "notification_channel_enum"`);
-        await queryRunner.query(`DROP TABLE "tenants"`);
-    }
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`DROP TABLE "tenant_notification_credentials"`);
+    await queryRunner.query(`DROP TABLE "notifications"`);
+    await queryRunner.query(`DROP TYPE "notification_status_enum"`);
+    await queryRunner.query(`DROP TYPE "notification_channel_enum"`);
+    await queryRunner.query(`DROP TABLE "tenants"`);
+  }
 }

@@ -3,13 +3,12 @@ import {
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
-    OneToMany,
     ManyToOne,
     UpdateDateColumn,
     JoinColumn,
     Unique,
 } from 'typeorm';
-import { Tenant } from 'src/tenants/entities/tenant.entity';
+import { Tenant } from '../../tenants/entities/tenant.entity';
 
 export enum NotificationChannel {
     EMAIL = 'email',
