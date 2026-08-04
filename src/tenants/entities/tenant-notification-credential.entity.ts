@@ -31,6 +31,6 @@ export class TenantNotificationCredential {
 
     @ManyToOne(() => Tenant, (tenant) => tenant.credentials)
     @JoinColumn({ name: 'tenant_id' })
-    tennat: Tenant
+    tenant: Tenant
 
 }

@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Tenant } from './tenants/entities/tenant.entity';
 import { TenantNotificationCredential } from './tenants/entities/tenant-notification-credential.entity';
+import { Notification } from './notifications/entities/notification.entity';
 
 @Module({
   imports: [
