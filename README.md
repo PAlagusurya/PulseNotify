@@ -96,3 +96,14 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+## Dev Tenant
+
+A default tenant is seeded automatically when you run migrations.
+
+| Field | Value |
+|-------|-------|
+| ID | `a0000000-0000-0000-0000-000000000001` |
+| Name | `PulseNotify Dev Tenant` |
+
+Use this tenant ID in the `X-Tenant-ID` header when making requests locally.
