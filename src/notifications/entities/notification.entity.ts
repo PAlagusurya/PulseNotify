@@ -55,10 +55,15 @@ export class Notification {
     @UpdateDateColumn({ name: 'updated_at' })
     updatedAt: Date;
 
+    @Column({ name: 'template_id', type: 'varchar', length: 255 })
+    templateId: string;
+
+    @Column({ type: 'jsonb', default: {} })
+    payload: Record<string, unknown>;
+
     @ManyToOne(() => Tenant, (tenant) => tenant.notifications)
     @JoinColumn({ name: 'tenant_id' })
     tenant: Tenant
-
 
 }
 

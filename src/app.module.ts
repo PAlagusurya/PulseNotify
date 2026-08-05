@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Tenant } from './tenants/entities/tenant.entity';
 import { TenantNotificationCredential } from './tenants/entities/tenant-notification-credential.entity';
 import { Notification } from './notifications/entities/notification.entity';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { Notification } from './notifications/entities/notification.entity';
         migrations: ['dist/database/migrations/*.js'],
         logging: configService.get<string>('NODE_ENV') !== 'production',
       })
-    })
+    }),
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [],
