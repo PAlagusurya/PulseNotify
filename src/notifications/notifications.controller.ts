@@ -1,7 +1,7 @@
-import { Notification } from './entities/notification.entity';
 import { Body, Controller, HttpStatus, Post, Res } from "@nestjs/common";
 import { NotificationService } from './notifications.service';
 import { CreateNotificationDto } from './dto/create-notification.dto';
+import type { Response } from 'express';
 
 @Controller('notifications')
 export class NotificationsController {
